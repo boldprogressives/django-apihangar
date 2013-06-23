@@ -68,6 +68,6 @@ def render_response(request, response_type, ctx):
 
 def check_permission(request, object):
     groups = list(request.user.groups.all().values_list("name", flat=True))
-    for permission in object.required_permissions.select_related("group").all():
-        if permission.group.name not in groups:
+    for permission in object.get_required_permissions():
+        if permission not in groups:
             return permission.group.name

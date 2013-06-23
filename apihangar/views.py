@@ -5,10 +5,11 @@ import urllib
 
 from apihangar.models import Endpoint, PrebuiltView
 from apihangar.utils import json_dumps, unescape, render_response, check_permission
+from apihangar.registry import registry
 
 @allow_http("GET")
 def retrieve_endpoint_form(request, api_url, response_type="json"):
-    endpoint = Endpoint.objects.get(url=api_url)
+    endpoint = registry.get(api_url) or Endpoint.objects.get(url=api_url)
 
     if check_permission(request, endpoint) is not None:
         return HttpResponseForbidden()
@@ -32,7 +33,7 @@ def execute_view(request, view_url):
     
 @allow_http("GET")
 def execute_endpoint(request, api_url, response_type="json"):
-    endpoint = Endpoint.objects.get(url=api_url)
+    endpoint = registry.get(api_url) or Endpoint.objects.get(url=api_url)
 
     if check_permission(request, endpoint) is not None:
         return HttpResponseForbidden()
