@@ -1,0 +1,13 @@
+*.egg-info*
+build
+dist
+.svn
+*~
+#*
+*#
+*.pyc
+*.pyo
+.DS_Store
+.#*
+*.orig
+*.ref

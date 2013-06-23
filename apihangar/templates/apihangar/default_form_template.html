@@ -1,0 +1,28 @@
+<h1>Results as HTML</h1>
+<form method="GET" action="{{ endpoint.execute_endpoint_html_url }}">
+  {% for variable in variables %}
+  <fieldset>
+    <label for="{{ variable }}">{{ variable }}</label>
+    <input type="text" id="{{ variable }}" name="{{ variable }}" />
+  </fieldset>
+  {% endfor %}
+
+  <p>
+    Render with template: <input name="template" value="default_template.html" />
+  </p>
+
+  <input type="submit" />
+</form>
+
+<h1>Results as JSON</h1>
+<form method="GET" action="{{ endpoint.execute_endpoint_json_url }}">
+  {% for variable in variables %}
+  <fieldset>
+    <label for="{{ variable }}">{{ variable }}</label>
+    <input type="text" id="{{ variable }}" name="{{ variable }}" />
+  </fieldset>
+  {% endfor %}
+  
+  <input type="submit" />
+</form>
+

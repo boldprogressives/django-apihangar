@@ -1,0 +1,21 @@
+{% for key, rows in results.items %}
+<h1>{{ key }}</h1>
+<table>
+  <thead>
+    <tr>
+      {% for heading in rows.0.keys %}
+      <th>{{ heading }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      {% for heading, item in row.items %}
+      <td>{{ item }}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endfor %}

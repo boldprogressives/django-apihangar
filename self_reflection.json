@@ -1,0 +1,32 @@
+[
+  {
+    "pk": 1, 
+    "model": "apihangar.query", 
+    "fields": {
+      "database": "default", 
+      "sql": "SELECT eq.key, e.name AS endpoint_name, e.url, q.name AS query_name, q.sql \r\n  FROM apihangar_endpointquery eq \r\n    JOIN apihangar_endpoint e on e.id=eq.endpoint_id\r\n    JOIN apihangar_query q on q.id=eq.query_id \r\n  WHERE q.database=\"{{ database }}\"\r\n  ORDER BY e.name, eq.key;", 
+      "name": "self-reflection", 
+      "description": ""
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "apihangar.endpoint", 
+    "fields": {
+      "url": "self-reflection", 
+      "name": "self-reflection", 
+      "description": ""
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "apihangar.endpointquery", 
+    "fields": {
+      "cache_timeout_seconds": null, 
+      "query": 1, 
+      "endpoint": 1, 
+      "key": "rows", 
+      "return_one": false
+    }
+  }
+]

@@ -1,0 +1,18 @@
+== Installation ==
+
+To install into an existing Django project:
+
+ * Add "apihangar" to your INSTALLED_APPS
+ * include() "apihangar.urls" somewhere in your URLconf
+ * Define APIHANGAR_DATABASES in your settings.py
+
+APIHANGAR_DATABASES specifies which database connections may be used
+by the apihangar to issue queries against.  The setting should be 
+a list of 2-tuples (alias, label) where the aliases refer to database
+connection aliases defined in your project's DATABASES setting.
+
+IT IS NOT RECOMMENDED THAT YOU ADD "default" TO YOUR APIHANGAR_DATABASES.
+The recommended way to use apihangar is to set up one or more read-only
+database connections; add these as secondary databases in your DATABASES 
+dict; and then use these read-only connections for your APIHANGAR_DATABASES.
+
