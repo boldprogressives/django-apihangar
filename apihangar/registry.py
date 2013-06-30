@@ -1,12 +1,16 @@
+
 from apihangar.core import get_variables, render_sql, run
 
 class Query(object):
     def __init__(self, sql, database, 
-                 use_templates=False, return_one=False, cache_timeout_seconds=None):
+                 use_templates=False, 
+                 return_one=False, return_list=False,
+                 cache_timeout_seconds=None):
         self.sql = sql
         self.database = database
         self.use_templates = use_templates
         self.return_one = return_one
+        self.return_list = return_list
         self.cache_timeout_seconds = cache_timeout_seconds
 
     def get_variables(self):
@@ -16,7 +20,8 @@ class Query(object):
         return render_sql(self, params)
     
     def run(self, params={}):
-        return run(self, self.return_one, params=params)
+        return run(self, return_one=self.return_one, return_list=self.return_list,
+                   params=params)
 
 class Endpoint(object):
 
@@ -43,3 +48,4 @@ registry = {}
 
 def register_endpoint(url, name, description, queries, permissions=[]):
     registry[url] = Endpoint(name, description, url, queries=queries, permissions=permissions)
+

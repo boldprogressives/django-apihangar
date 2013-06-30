@@ -26,8 +26,8 @@ class Query(models.Model):
     def render_sql(self, params):
         return render_sql(self, params)
 
-    def run(self, return_one=False, params={}):
-        return run(self, return_one=return_one, params=params)
+    def run(self, return_one=False, return_list=False, params={}):
+        return run(self, return_one=return_one, return_list=return_list, params=params)
 
 class Endpoint(models.Model):
     name = models.CharField(max_length=250)
@@ -78,6 +78,7 @@ class EndpointQuery(models.Model):
     key = models.CharField(max_length=50)
 
     return_one = models.BooleanField(default=False)
+    return_list = models.BooleanField(default=False)
 
     cache_timeout_seconds = models.IntegerField(null=True, blank=True, default=None)
 
@@ -89,7 +90,8 @@ class EndpointQuery(models.Model):
 
     def run(self, params={}):
         if self.cache_timeout_seconds is None:
-            return self.query.run(return_one=self.return_one, params=params)
+            return self.query.run(return_one=self.return_one, return_list=self.return_list,
+                                  params=params)
 
         cache = get_cache(getattr(settings, 'APIHANGAR_CACHE', "default"))
         args = md5_constructor(json_dumps(params)).hexdigest()
@@ -98,7 +100,8 @@ class EndpointQuery(models.Model):
         if result is not None:
             return result
 
-        result = self.query.run(return_one=self.return_one, params=params)
+        result = self.query.run(return_one=self.return_one, return_list=self.return_list,
+                                params=params)
         cache.set(cache_key, result, self.cache_timeout_seconds)
         return result
 

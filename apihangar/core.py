@@ -78,7 +78,7 @@ def render_sql(query, params):
         return _template_render_sql(query, params)
     return _string_render_sql(query, params)
 
-def run(query, return_one=False, params={}):
+def run(query, return_one=False, return_list=False, params={}):
     cursor = connections[query.database].cursor()
 
     sql = render_sql(query, params)
@@ -89,7 +89,10 @@ def run(query, return_one=False, params={}):
     sql = sql.replace(",)", ")").replace(", )", " )")
 
     cursor.execute(sql)
-    result = dictfetchall(cursor)
+    if return_list:
+        result = [item for sublist in cursor.fetchall() for item in sublist]
+    else:
+        result = dictfetchall(cursor)
 
     if return_one:
         result = result[0]
