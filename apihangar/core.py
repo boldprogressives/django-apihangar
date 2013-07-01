@@ -95,7 +95,10 @@ def run(query, return_one=False, return_list=False, params={}):
         result = dictfetchall(cursor)
 
     if return_one:
-        result = result[0]
+        try:
+            result = result[0]
+        except IndexError:
+            result = None
 
     return (connections[query.database].queries.pop(0),
             result)
