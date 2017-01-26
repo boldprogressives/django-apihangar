@@ -1,8 +1,8 @@
 from django.conf import settings
-from django.core.cache import get_cache
+from django.core.cache import caches
 from django.db import connections
 from django.db import models
-from django.utils.hashcompat import md5_constructor
+from hashlib import md5 as md5_constructor
 
 from apihangar.core import get_variables, render_sql, run
 from apihangar.utils import json_dumps, json_loads
@@ -93,7 +93,8 @@ class EndpointQuery(models.Model):
             return self.query.run(return_one=self.return_one, return_list=self.return_list,
                                   params=params)
 
-        cache = get_cache(getattr(settings, 'APIHANGAR_CACHE', "default"))
+        cache_name = getattr(settings, 'APIHANGAR_CACHE', "default")
+        cache = caches[cache_name]
         args = md5_constructor(json_dumps(params)).hexdigest()
         cache_key = "apihangar.endpoint_query.%s.%s" % (self.id, args)
         result = cache.get(cache_key)

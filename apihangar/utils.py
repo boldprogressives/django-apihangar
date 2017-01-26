@@ -19,7 +19,7 @@ else:
     import json
 
 from django.core.serializers.json import DjangoJSONEncoder
-from django.utils.datastructures import SortedDict
+from collections import OrderedDict
 
 def dictfetchall(cursor):
     "Returns all rows from a cursor as a dict"
