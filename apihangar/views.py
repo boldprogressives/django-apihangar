@@ -17,8 +17,12 @@ def retrieve_endpoint_form(request, api_url, response_type="json"):
     variables = set()
     for apiquery in endpoint.endpoint_queries.all().select_related():
         variables.update(apiquery.query.get_variables())
+    variables = list(variables)
 
-    return render_response(request, response_type, {'variables': variables})
+    return render_response(request, response_type,
+                           {'variables': variables, 'endpoint': endpoint},
+                           default_template='apihangar/default_form_template.html',
+    )
 
 @allow_http("GET")
 def execute_view(request, view_url):

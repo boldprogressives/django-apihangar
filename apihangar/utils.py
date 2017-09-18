@@ -19,7 +19,7 @@ else:
     import json
 
 from django.core.serializers.json import DjangoJSONEncoder
-from collections import OrderedDict
+from collections import OrderedDict as SortedDict
 
 def dictfetchall(cursor):
     "Returns all rows from a cursor as a dict"
@@ -49,7 +49,8 @@ def json_loads(*args, **kw):
 from django.http import HttpResponse
 from djangohelpers.lib import rendered_with
 
-def render_response(request, response_type, ctx):
+def render_response(request, response_type, ctx,
+                    default_template='apihangar/default_template.html'):
 
     if response_type == "json":
         json = json_dumps(ctx)
@@ -60,7 +61,7 @@ def render_response(request, response_type, ctx):
         else:
             return HttpResponse(json, content_type="application/json")
     elif response_type == "html":
-        template = request.GET.get("template", "apihangar/default_template.html")
+        template = request.GET.get("template", default_template)
         @rendered_with(template)
         def inner(_request, ctx):
             return ctx
